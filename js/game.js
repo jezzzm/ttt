@@ -1,34 +1,42 @@
 const ttt = {
+
+  //GAME PROPS
   board: [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8]
   ],
-  playerTurn: true, //true for player 1, false for player 2 (or computer).
+  player: true, //true for player 1, false for player 2 (or computer).
   turnCount: 0,
 
+  moves: [], // store: [[player, row, col],...]
+
+  // GAMEPLAY LOGIC
   play: function(pos) { //update game board if valid, log to console if not
     let coords = this.validMove(pos);
     if (!coords) {
-      return console.log('invalid move. Please choose somewhere else.')
+      return console.log('invalid move. Please choose somewhere else.') // TODO: trigger ui function
     }
-
-    this.board[coords[0]][coords[1]] = this.playerTurn;
+    this.moves.push([this.player, this.board[coords[0]][coords[1]], coords]);
+    this.board[coords[0]][coords[1]] = this.player;
     let result = this.winCheck();
     this.print();
     if (result === null) {
       this.turnCount++
+
       if (this.turnCount === 9) { //this is the last move that may be played - draw
         this.reset();
-        return console.log(`cat's game. start again`);
+        return console.log(`cat's game. start again`); // TODO: trigger ui function
       }
-      this.playerTurn = !this.playerTurn //toggle to next player
-      return console.log('game still active, play next move')
+      this.player = !this.player //toggle to next player
+      return console.log('game still active, play next move') // TODO: trigger ui function
     } else { //game is over
-      return console.log(`game over! ${result} is the winner`)
+      return console.log(`game over! ${result} is the winner`) // TODO: trigger ui function
 
     }
   },
+
+  // MOVE VALIDATION
 
   validMove: function(pos) { //must be played on 'empty' square
     let coords = this.getSquare(pos);
@@ -43,15 +51,7 @@ const ttt = {
     return [multiplier, pos - 3 * multiplier];
   },
 
-  reset: function() {
-    this.turnCount = 0;
-    this.board = [ [0, 1, 2], [3, 4, 5], [6, 7, 8] ];
-    this.playerTurn = true;
-  },
-
-  print: function() {
-    return console.log(this.board.join('\n'));
-  },
+  // WIN LOGIC
 
   winCheck: function() { // if it returns 'o' or 'x' we have a winner
     let all = [] // matrix of size 8 x 3 representing all winning possibilities
@@ -88,6 +88,17 @@ const ttt = {
       diagonals[1].push(matrix[i][matrix[0].length - 1 - i]); //top right to bottom left
     }
     return diagonals;
+  },
+
+  //UTILITY METHODS
+  print: function() {
+    return console.log(this.board.join('\n'));
+  },
+
+  reset: function() {
+    this.turnCount = 0;
+    this.board = [ [0, 1, 2], [3, 4, 5], [6, 7, 8] ];
+    this.player = true;
   }
 }
 
@@ -98,7 +109,7 @@ ttt.play(4);
 ttt.play(4);
 ttt.play(5);
 ttt.play(3);
-ttt.play(6);
-ttt.play(8);
-ttt.play(8);
-ttt.play(0);
+// ttt.play(6);
+// ttt.play(8);
+// ttt.play(8);
+// ttt.play(0);
