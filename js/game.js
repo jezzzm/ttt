@@ -1,42 +1,42 @@
+const statusCodes = {
+  INVALID: 0,
+  VALID: 1,
+  DRAW: null,
+  PLAYER1WIN: true,
+  PLAYER2WIN: false
+}
 const ttt = {
 
   //GAME PROPS
-  board: [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8]
-  ],
+  board: [ [0, 1, 2], [3, 4, 5], [6, 7, 8] ], //basic 3x3 board to begin
   player: true, //true for player 1, false for player 2 (or computer).
   turnCount: 0,
-
   moves: [], // store: [[player, row, col],...]
-
-  //status codes
-  // 0: invalid move (next turn), 1: valid move (next turn),
-  // null: draw, true: winner true, false winner: false
-  status: 1,
+  status: statusCodes.VALID, //game status - see statusCodes obj
 
   // GAMEPLAY LOGIC
   play: function(pos) { //update game board if valid, log to console if not
-    let coords = this.validMove(pos);
-    if (!coords) { //invalid move
-      return this.status = 0;
-    }
-    this.moves.push([this.player, this.board[coords[0]][coords[1]], coords]);
-    this.board[coords[0]][coords[1]] = this.player;
-    let result = this.winCheck();
-    this.print();
-    if (result === null) {
-      this.turnCount++
-
-      if (this.turnCount === 9) { //this is the last move that may be played - draw
-        return this.status = null;
+    if (this.status === 0 || this.status === 1) { // can only play if game isn't over
+      let coords = this.validMove(pos);
+      if (!coords) { //invalid move
+        return this.status = statusCodes.INVALID;
       }
-      this.player = !this.player //toggle to next player
-      return this.status = 1;
-    } else { //game is over, winner is true or false
-      return this.status = result;
-
+      this.moves.push([this.player, ...coords]);
+      this.board[coords[0]][coords[1]] = this.player;
+      let result = this.winCheck();
+      this.print();
+      if (result === null) {
+        this.turnCount++
+        if (this.turnCount === 9) { //this is the last move that may be played - draw
+          return this.status = statusCodes.DRAW;
+        }
+        this.player = !this.player //toggle to next player
+        return this.status = statusCodes.VALID;
+      } else { //game is over, winner is true or false
+        return this.status = result;
+      }
+    } else {
+      console.log('else');
     }
   },
 
@@ -106,13 +106,13 @@ const ttt = {
   }
 }
 
-ttt.play(1);
-ttt.play(2);
-ttt.play(7);
-ttt.play(4);
-ttt.play(4);
-ttt.play(5);
-ttt.play(3);
+// ttt.play(1);
+// ttt.play(2);
+// ttt.play(7);
+// ttt.play(4);
+// ttt.play(4);
+// ttt.play(5);
+// ttt.play(3);
 // ttt.play(6);
 // ttt.play(8);
 // ttt.play(8);
