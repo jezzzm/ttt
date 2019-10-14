@@ -21,7 +21,7 @@ section {
   display: grid;
   grid-template: repeat(3, 1fr) /repeat(3, 1fr);
   grid-gap: 10px;
-  max-width 600px;
+  max-width: 600px;
   width: 96vw;
   max-height: 600px;
   height: 96vw;
