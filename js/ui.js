@@ -6,9 +6,18 @@ let reset = document.getElementById('reset')
 reset.addEventListener('click', doReset);
 let notice = document.getElementById('notice');
 
+let expand = document.getElementById('expand');
+expand.addEventListener('click', () => changeBoard(1));
 
+let reduce = document.getElementById('reduce');
+reduce.addEventListener('click', () => changeBoard(-1));
+
+let board = document.getElementById('board');
+
+//initial board setup
 for (let i = 0; i <= 8; i++) { //change to length of
   let el = getSquare(i);
+  el.className = 'free';
   let id = parseInt(el.id.slice(2)) //strip off 'sq' and create int
   el.addEventListener('click', () => squareClick(id));
 }
@@ -27,30 +36,63 @@ function squareClick(id) {
   if (outcome === 1) { //update board, show message for valid move
     el.classList.remove('free');
     player ? el.classList.add('p-one') : el.classList.add('p-two');
-    notice.innerText = `${name} played valid move at row ${row}, column ${col}.`
+    msg(`${name} played valid move at row ${row}, column ${col}.`);
   } else if (outcome === 0) { //message to show for invalid move
-    notice.innerText = 'Invalid move! You cannot choose a square already taken'
+    msg('Invalid move! You cannot choose a square already taken');
   } else if (outcome !== undefined){ //game is over
     player ? el.classList.add('p-one') : el.classList.add('p-two');
     if (outcome === true || outcome === false) { //player wins
-      notice.innerText = `${name} is the winner!`
+      msg(`${name} is the winner!`);
 
     } else { //draw
-      notice.innerText = `Draw!`
+      msg(`Draw!`);
     }
   }
 }
 
 function doReset() {
-  for (let i = 0; i <= 8; i++) {
+  for (let i = 0; i < ttt.board.length ** 2; i++) {
     let el = getSquare(i);
     el.className = 'free';
   }
-
-  notice.innerText = 'Game has been reset'
+  msg('Game has been reset')
   ttt.reset();
 }
 
+function changeBoard(dir) {
+  let newSize = ttt.board.length + dir;
+  if (newSize >= 3) {
+    doReset();
+    ttt.board = ttt.createBoard(newSize)
+    updateChildren(board, newSize);
+    board.style = `grid-template: repeat(${newSize}, 1fr) /repeat(${newSize}, 1fr)`;
+    msg(`Board expanded to ${newSize}x${newSize}`);
+  } else {
+    msg('Board cannot be less than 3x3.');
+  }
+
+}
+
+//helpers
 function getSquare(id) {
   return document.getElementById(`sq${id}`)
+}
+
+function msg(str) { //update text of message area
+  notice.innerText = str;
+}
+
+function updateChildren(parent, size) { //size is side length of square
+  while (parent.firstChild) { //remove existing
+        parent.removeChild(parent.firstChild);
+  }
+  let frag = document.createDocumentFragment(); // to update dom once only
+  for (let i = 0; i < size * size; i ++) {
+    let el = document.createElement('div');
+    el.className = 'free';
+    el.id = `sq${i}`
+    el.addEventListener('click', () => squareClick(i));
+    frag.appendChild(el)
+  }
+  parent.appendChild(frag);
 }

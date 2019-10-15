@@ -27,7 +27,7 @@ const ttt = {
       this.print();
       if (result === null) {
         this.turnCount++
-        if (this.turnCount === 9) { //this is the last move that may be played - draw
+        if (this.turnCount === this.board.length ** 2) { //this is the last move that may be played - draw
           return this.status = statusCodes.DRAW;
         }
         this.player = !this.player //toggle to next player
@@ -50,14 +50,15 @@ const ttt = {
   },
 
   getSquare: function(pos) { //input pos 0-8, return coords as [row, col]
-    let multiplier = Math.floor(pos/3);
-    return [multiplier, pos - 3 * multiplier];
+    let size = this.board[0].length;
+    let multiplier = Math.floor(pos/size);
+    return [multiplier, pos - size * multiplier];
   },
 
   // WIN LOGIC
 
   winCheck: function() { // if it returns 'o' or 'x' we have a winner
-    let all = [] // matrix of size 8 x 3 representing all winning possibilities
+    let all = [] // matrix of size 8 x side length representing all winning possibilities
     all.push(...this.board, ...this.transpose(this.board), ...this.diagonals(this.board));
     return this.checkRows(all);
   },
@@ -94,16 +95,29 @@ const ttt = {
   },
 
   //UTILITY METHODS
+  createBoard: function(size) {
+    let count = 0;
+    return [...Array(size)].map((_, i) => { //board with side length 'size'
+      let row = [];
+      for (let j = 0; j < size; j++) {
+        row.push(size * i + count);
+        count++
+      }
+      count = 0;
+      return row
+    });
+  },
+
   print: function() {
     return console.log(this.board.join('\n'));
   },
 
   reset: function() {
     this.turnCount = 0;
-    this.board = [ [0, 1, 2], [3, 4, 5], [6, 7, 8] ];
     this.player = true;
     this.status = 1;
     this.moves = [];
+    this.board = this.createBoard(this.board[0].length); //reset with same size
   }
 }
 
