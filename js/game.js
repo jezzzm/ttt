@@ -11,7 +11,7 @@ const ttt = {
   board: [ [0, 1, 2], [3, 4, 5], [6, 7, 8] ], //basic 3x3 board to begin
   player: true, //true for player 1, false for player 2 (or computer).
   turnCount: 0,
-  moves: [], // store: [[player, row, col],...]
+  moves: [], // shape: [[player, row, col],...]
   status: statusCodes.VALID, //game status - see statusCodes obj
 
   // GAMEPLAY LOGIC
@@ -22,7 +22,7 @@ const ttt = {
         return this.status = statusCodes.INVALID;
       }
       this.moves.push([this.player, ...coords]);
-      this.board[coords[0]][coords[1]] = this.player;
+      this.board[coords[0]][coords[1]] = this.player; //update board
       let result = this.winCheck();
       this.print();
       if (result === null) {
@@ -36,7 +36,7 @@ const ttt = {
         return this.status = result;
       }
     } else {
-      console.log('else');
+      console.log('not possible to play, must reset');
     }
   },
 
@@ -50,15 +50,15 @@ const ttt = {
   },
 
   getSquare: function(pos) { //input pos 0-8, return coords as [row, col]
-    let size = this.board[0].length;
-    let multiplier = Math.floor(pos/size);
-    return [multiplier, pos - size * multiplier];
+    let side = this.board[0].length;
+    let multiplier = Math.floor(pos/side);
+    return [multiplier, pos - side * multiplier];
   },
 
   // WIN LOGIC
 
   winCheck: function() { // if it returns 'o' or 'x' we have a winner
-    let all = [] // matrix of size 8 x side length representing all winning possibilities
+    let all = [] // matrix of 8 x side length representing all winning possibilities
     all.push(...this.board, ...this.transpose(this.board), ...this.diagonals(this.board));
     return this.checkRows(all);
   },
@@ -95,12 +95,12 @@ const ttt = {
   },
 
   //UTILITY METHODS
-  createBoard: function(size) {
+  createBoard: function(side) {
     let count = 0;
-    return [...Array(size)].map((_, i) => { //board with side length 'size'
+    return [...Array(side)].map((_, i) => {
       let row = [];
-      for (let j = 0; j < size; j++) {
-        row.push(size * i + count);
+      for (let j = 0; j < side; j++) {
+        row.push(side * i + count);
         count++
       }
       count = 0;
@@ -112,23 +112,11 @@ const ttt = {
     return console.log(this.board.join('\n'));
   },
 
-  reset: function() {
+  reset: function(side=this.board.length) {
     this.turnCount = 0;
     this.player = true;
     this.status = 1;
     this.moves = [];
-    this.board = this.createBoard(this.board[0].length); //reset with same size
+    this.board = this.createBoard(side); //reset with same side length
   }
 }
-
-// ttt.play(1);
-// ttt.play(2);
-// ttt.play(7);
-// ttt.play(4);
-// ttt.play(4);
-// ttt.play(5);
-// ttt.play(3);
-// ttt.play(6);
-// ttt.play(8);
-// ttt.play(8);
-// ttt.play(0);

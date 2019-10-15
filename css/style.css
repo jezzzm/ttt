@@ -10,17 +10,20 @@ body {
 main {
   margin: 0 auto;
   height: 100%;
-  display: grid;
   box-sizing:border-box;
-  grid-template-columns: 1fr;
-  grid-template-rows: : 200px auto 200px;
+  display: flex;
+  flex-flow: column;
+}
+header {
+  width: 100%;
+}
+header > * {
+  text-align: center;
 }
 section {
-  position: relative;
-  box-sizing:border-box;
   display: grid;
   grid-template: repeat(3, 1fr) /repeat(3, 1fr);
-  grid-gap: 10px;
+  grid-gap: 1vw;
   max-width: 600px;
   width: 96vw;
   max-height: 600px;
@@ -41,4 +44,34 @@ section > div {
 
 .p-one {
   background: blue;
+}
+
+.controls {
+  margin: 2vh auto;
+  padding: 0 2vw;
+  max-width: 600px;
+  width: 100%;
+}
+.log {
+  flex: 2;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  width: 100%;
+  background: #222;
+}
+.log > * {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 600px;
+  padding: 2vw;
+  color: aliceblue;
+  font-family: monospace;
+  font-size:  0.9em;
+  line-height: 1.4;
+}
+.log > article {
+  overflow-y: scroll;
+  flex: 2;
+
 }

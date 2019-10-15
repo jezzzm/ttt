@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/light.min.css">
   <link rel="stylesheet" href="css/style.css">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
@@ -28,12 +29,14 @@
         <div id="sq8"></div>
 
     </section>
-    <aside >
+    <aside class="controls">
       <button id="reset">Reset Game</button>
       <button id="expand">Increase Board Size</button>
       <button id="reduce">Reduce Board Size</button>
-      <h3>Game Status</h3>
-      <p id="notice">dsnkajg sng skj geks jn </p>
+    </aside>
+    <aside class="log">
+      <h3>Game Log</h3>
+      <article id="notice">Game started...</article>
     </aside>
   </main>
   <script src="js/game.js" charset="utf-8"></script>
