@@ -14,26 +14,28 @@
     <header>
       <h1>Tic Tac Toe</h1>
     </header>
-    <aside id="settings" class="controls">
-      <div class="player-names">
+    <aside id="settings" class="controls players">
         <input type="text" id="p1-name" class="name" placeholder="P1 Name">
-        <p class="score">
-          <span id="p1-score">0</span> : <span id="p2-score">0</span>
-        </p>
+        <div>
+          <p class="score">
+            <span id="p1-score">0</span> : <span id="p2-score">0</span>
+          </p>
+        </div>
         <input type="text" id="p2-name" class="name" placeholder="P2 Name">
-      </div>
-      <div class="current">
-        <p id="result">Current Turn: </p>
-        <p id="current">P1</p>
-      </div>
     </aside>
     <section id="board"></section>
     <aside id="controls" class="controls">
       <button id="reset">Reset Game</button>
+      <div class="current">
+        <p id="result">Current Turn: </p>
+        <p id="current">P1</p>
+      </div>
       <div class="board-size">
-        Board Size:
-      <button id="expand">+</button>
-      <button id="reduce">-</button>
+        <p>Board Size:</p>
+        <div>
+          <button id="expand">+</button>
+          <button id="reduce">-</button>
+        </div>
       </div>
     </aside>
     <aside class="log">

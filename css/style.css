@@ -6,7 +6,6 @@ body {
   width: 100vw;
   max-width: 100vw;
   overflow: hidden;
-  /* color: #000; */
 }
 
 main {
@@ -25,23 +24,18 @@ header > * {
   text-align: center;
   margin:  0 auto;
 }
-.current p {
-  margin: 0;
-  text-align: right;
-}
-.current p:first-child {
-  font-size: 0.8em;
-}
-.current p:last-child {
-  font-size: 1.3em;
-}
 input.name {
-  display: inline-block !important;
+  /* display: inline-block !important; */
   margin-bottom: 0;
   box-sizing: border-box;
+  flex-shrink: 2;
+  max-width: 40%;
+}
+input:last-child {
+  margin-right: 0;
 }
 
-.player-names p {
+.players p {
   display: inline-block;
   font-size: 1.2em;
   margin: 0 6px 0 0;
@@ -58,6 +52,7 @@ section {
 }
 section > div {
   background: #8b8b8b;
+  transition: 0.2s background;
 }
 
 .free:hover {
@@ -82,14 +77,30 @@ section > div {
   justify-content: space-between;
   align-items: center;
 }
-.board-size {
+.current p, .board-size p {
+  margin: 0;
+  text-align: center;
+}
+.current p:first-child {
+  font-size: 0.8em;
+}
+.current p:last-child {
+  font-size: 1.3em;
+}
+
+#controls > * {
   display: inline-block;
+  width: 33%;
+  box-sizing: border-box;
 }
 .board-size button {
   padding: 10px 15px;
 }
 .board-size button:last-child {
   margin-right: 0;
+}
+.board-size > div {
+  text-align: center;
 }
 
 .reset-pop {
