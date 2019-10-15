@@ -2,25 +2,28 @@
 //functions to adjust ai, triggered in the ttt game object
 
 //listeners/elements
-let reset = document.getElementById('reset');
-reset.addEventListener('click', doReset);
-let notice = document.getElementById('notice');
-
-let expand = document.getElementById('expand');
-expand.addEventListener('click', () => changeBoard(1));
-
-let reduce = document.getElementById('reduce');
-reduce.addEventListener('click', () => changeBoard(-1));
+let p1 = document.getElementById('p1-name');
+p1.addEventListener('change', () => updateName());
+let p2 = document.getElementById('p2-name');
+p2.addEventListener('change', () => updateName());
+let result = document.getElementById('result');
+let currentTurn = document.getElementById('current');
 
 let board = document.getElementById('board');
 
+let reset = document.getElementById('reset');
+reset.addEventListener('click', doReset);
+let notice = document.getElementById('notice');
+let expand = document.getElementById('expand');
+expand.addEventListener('click', () => changeBoard(1));
+let reduce = document.getElementById('reduce');
+reduce.addEventListener('click', () => changeBoard(-1));
+
 //initial board setup
-for (let i = 0; i <= 8; i++) { //change to length of
-  let el = getSquare(i);
-  el.className = 'free';
-  let id = parseInt(el.id.slice(2)); //strip off 'sq' and create int
-  el.addEventListener('click', () => squareClick(id));
-}
+updateChildren(3); //create board w side length 3
+
+let p1Name = 'P1';
+let p2Name = 'P2'
 
 
 // functions for listener callbacks
@@ -29,31 +32,34 @@ function squareClick(id) {
   console.log(ttt.status);
   let [player, row, col] = ttt.moves.slice(-1)[0]; // one liner for this??
   //console.log(player, row, col)
-  let name = player ? `P1` : `P2`; // TODO: user selection
+  let name = player ? p1Name : p2Name; // TODO: user selection
   //let notice = document.getElementById('notice');
   let el = getSquare(id);
 
   if (outcome === 1) { //update board, show message for valid move
     el.classList.remove('free');
     player ? el.classList.add('p-one') : el.classList.add('p-two');
+    player ? currentTurn.innerText = p2Name: currentTurn.innerText = p1Name;
     msg(`${name} played valid move at R:${row}, C:${col}.`);
   } else if (outcome === 0) { //message to show for invalid move
     msg('Invalid move! You cannot choose a square already taken');
   } else if (outcome !== undefined){ //game is over
+
+    let squares = document.querySelectorAll('section > div');
+    squares.forEach(x => x.classList.remove('free'));
     player ? el.classList.add('p-one') : el.classList.add('p-two');
+    result.style = 'display: none';
     if (outcome === true || outcome === false) { //player wins
       msg(`${name} is the winner!`);
+      outcome ? currentTurn.innerText = `${p1Name} wins!`: currentTurn.innerText = `${p2Name} wins!`;
+
       drawLine();
 
     } else { //draw
+      currentTurn.innerText = 'Draw!'
       msg(`Draw!`);
     }
   }
-}
-
-function doReset() {
-  updateChildren();
-  msg('Game has been reset');
 }
 
 function changeBoard(dir) {
@@ -66,6 +72,14 @@ function changeBoard(dir) {
     msg('Board cannot be less than 3x3.');
   }
 
+}
+
+function updateName() {
+  console.log(event);
+  let val = event.target.value;
+  let player = event.target.id.slice(1,2);
+  player === '1' ? p1Name = val : p2Name = val;
+  msg(`P${player} name changed to ${val}.`)
 }
 
 //helpers
@@ -91,6 +105,13 @@ function updateChildren(side=ttt.board.length) { //side is side length of square
     frag.appendChild(el);
   }
   board.appendChild(frag);
+}
+
+function doReset() {
+  updateChildren();
+  result.style = 'display: block';
+  current.innerText = p1Name;
+  msg('Game has been reset');
 }
 
 function drawLine() {

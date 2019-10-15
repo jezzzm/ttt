@@ -4,11 +4,13 @@ body {
   font-size: 16px;
   height: 100vh;
   width: 100vw;
+  max-width: 100vw;
   overflow: hidden;
 }
 
 main {
   margin: 0 auto;
+  width: 100%;
   height: 100%;
   box-sizing:border-box;
   display: flex;
@@ -16,9 +18,32 @@ main {
 }
 header {
   width: 100%;
+  margin: 2vh auto 0;
 }
 header > * {
   text-align: center;
+  margin:  0 auto;
+}
+.current p {
+  margin: 0;
+  text-align: right;
+}
+.current p:first-child {
+  font-size: 0.8em;
+}
+.current p:last-child {
+  font-size: 1.3em;
+}
+input.name {
+  display: inline-block !important;
+  margin-bottom: 0;
+  box-sizing: border-box;
+}
+
+.player-names p {
+  display: inline-block;
+  font-size: 1.2em;
+  margin: 0 6px 0 0;
 }
 section {
   display: grid;
@@ -47,10 +72,23 @@ section > div {
 }
 
 .controls {
+  box-sizing: border-box;
   margin: 2vh auto;
-  padding: 0 2vw;
+  /* padding: 0 2vw; */
   max-width: 600px;
-  width: 100%;
+  width: 96vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.board-size {
+  display: inline-block;
+}
+.board-size button {
+  padding: 10px 15px;
+}
+.board-size button:last-child {
+  margin-right: 0;
 }
 .log {
   flex: 2;
@@ -64,7 +102,7 @@ section > div {
   margin: 0 auto;
   width: 100%;
   max-width: 600px;
-  padding: 2vw;
+  padding: 1vw 2vw;
   color: aliceblue;
   font-family: monospace;
   font-size:  0.9em;

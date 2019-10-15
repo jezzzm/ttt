@@ -8,7 +8,7 @@ const statusCodes = {
 const ttt = {
 
   //GAME PROPS
-  board: [ [0, 1, 2], [3, 4, 5], [6, 7, 8] ], //basic 3x3 board to begin
+  board: [], //basic 3x3 board to begin
   player: true, //true for player 1, false for player 2 (or computer).
   turnCount: 0,
   moves: [], // shape: [[player, row, col],...]
