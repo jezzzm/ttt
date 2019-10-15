@@ -9,15 +9,17 @@ const statusCodes = {
 
 const ttt = {
 
-  //GAME PROPS
-  board: [], //basic 3x3 board to begin
+  //GAME PROPS /////////////////////////////////////////////////////////////////
+  board: [], //main board which is updated as players make moves
+  boardID: [], //copy of current board which keeps IDs of each cell for later reference
   player: true, //true for player 1, false for player 2 (or computer).
   turnCount: 0,
   moves: [], // shape: [[player, row, col],...]
   status: statusCodes.VALID, //game status - see statusCodes obj
   score: [0,0], //player one, player two
+  winAxis: null, //index of winning axis
 
-  // GAMEPLAY LOGIC
+  // GAMEPLAY LOGIC ////////////////////////////////////////////////////////////
   play: function(pos) { //update game board if valid, log to console if not
     if (this.status === 0 || this.status === 1) { // can only play if game isn't over
       let coords = this.validMove(pos);
@@ -26,7 +28,9 @@ const ttt = {
       }
       this.moves.push([this.player, ...coords]);
       this.board[coords[0]][coords[1]] = this.player; //update board
-      let result = this.winCheck();
+      let [result, axis] = this.winCheck(); //if win: [true or false, winning axis on board], else [null, null]
+      console.log(axis);
+      this.winAxis = axis;
       if (result === null) {
         this.turnCount++
         if (this.turnCount === this.board.length ** 2) { //this is the last move that may be played - draw
@@ -43,8 +47,7 @@ const ttt = {
     }
   },
 
-  // MOVE VALIDATION
-
+  // MOVE VALIDATION ///////////////////////////////////////////////////////////
   validMove: function(pos) { //must be played on 'empty' square
     let coords = this.getSquare(pos);
     let sq = this.board[coords[0]][coords[1]];
@@ -52,29 +55,24 @@ const ttt = {
 
   },
 
-  getSquare: function(pos) { //input pos 0-8, return coords as [row, col]
-    let side = this.board[0].length;
-    let multiplier = Math.floor(pos/side);
-    return [multiplier, pos - side * multiplier];
-  },
-
-  // WIN LOGIC
-
+  // WIN LOGIC /////////////////////////////////////////////////////////////////
   winCheck: function() { // if it returns 'o' or 'x' we have a winner
-    let all = [] // matrix of 8 x side length representing all winning possibilities
-    all.push(...this.board, ...this.transpose(this.board), ...this.diagonals(this.board));
+    let all = this.winMatrix(this.board);
     return this.checkRows(all);
   },
 
-  checkRows: function(matrix) { //doesn't need to be a square matrix
-    let winner = null;
-    for (let i = 0; i < matrix.length; i++) { //number of rows in matrix
-      winner = this.checkRow(matrix[i]);
+  winMatrix: function(matrix) {  //shape: R: sideLength(sL), C: 2x sL + 2
+    return [...matrix, ...this.transpose(matrix), ...this.diagonals(matrix)]
+  },
+
+  checkRows: function(matrix) {
+    for (let i = 0; i < matrix.length; i++) {
+      let winner = this.checkRow(matrix[i]);
       if (winner !== null) {
-        return winner;
+        return [winner, i];
       }
     }
-    return winner;
+    return [null, null]; //returns null if no match on current board
   },
 
   checkRow: function(row) {
@@ -97,7 +95,17 @@ const ttt = {
     return diagonals;
   },
 
-  //UTILITY METHODS
+  //HELPER METHODS /////////////////////////////////////////////////////////////
+  getSquare: function(pos) { //input pos 0-8, return coords as [row, col]
+    let side = this.board[0].length;
+    let multiplier = Math.floor(pos/side);
+    return [multiplier, pos - side * multiplier];
+  },
+
+  deepCopyNestedArray: function(arr) {
+    return arr.map(x => x.slice());
+  },
+
   createBoard: function(side) {
     let count = 0;
     return [...Array(side)].map((_, i) => {
@@ -120,6 +128,8 @@ const ttt = {
     this.player = true;
     this.status = 1;
     this.moves = [];
-    this.board = this.createBoard(side); //reset with same side length
+    this.winAxis = null;
+    this.board = this.createBoard(side);
+    this.boardID = this.deepCopyNestedArray(this.winMatrix(this.board));
   }
 }

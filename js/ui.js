@@ -118,5 +118,9 @@ function doReset() {
 }
 
 function drawLine() {
-
+  let ids = ttt.boardID[ttt.winAxis];
+  ids.forEach(id => {
+    let el = getSquare(id);
+    el.classList.add('highlight');
+  });
 }
