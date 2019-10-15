@@ -6,10 +6,13 @@ let p1 = document.getElementById('p1-name');
 p1.addEventListener('change', () => updateName());
 let p2 = document.getElementById('p2-name');
 p2.addEventListener('change', () => updateName());
+let p1Score = document.getElementById('p1-score');
+let p2Score = document.getElementById('p2-score');
 let result = document.getElementById('result');
 let currentTurn = document.getElementById('current');
 
 let board = document.getElementById('board');
+let resetPop = document.getElementById('reset-pop');
 
 let reset = document.getElementById('reset');
 reset.addEventListener('click', doReset);
@@ -29,7 +32,7 @@ let p2Name = 'P2'
 // functions for listener callbacks
 function squareClick(id) {
   let outcome = ttt.play(id);
-  console.log(ttt.status);
+  // console.log(ttt.status);
   let [player, row, col] = ttt.moves.slice(-1)[0]; // one liner for this??
   //console.log(player, row, col)
   let name = player ? p1Name : p2Name; // TODO: user selection
@@ -40,11 +43,12 @@ function squareClick(id) {
     el.classList.remove('free');
     player ? el.classList.add('p-one') : el.classList.add('p-two');
     player ? currentTurn.innerText = p2Name: currentTurn.innerText = p1Name;
-    msg(`${name} played valid move at R:${row}, C:${col}.`);
+    msg(`${name} played valid move at (Row:${row}, Col:${col}).`);
   } else if (outcome === 0) { //message to show for invalid move
     msg('Invalid move! You cannot choose a square already taken');
-  } else if (outcome !== undefined){ //game is over
-
+  } else if (outcome === -1) { //game already over
+    //TODO: show popup if not already showing
+  } else{ //game finishes this move
     let squares = document.querySelectorAll('section > div');
     squares.forEach(x => x.classList.remove('free'));
     player ? el.classList.add('p-one') : el.classList.add('p-two');
@@ -52,10 +56,10 @@ function squareClick(id) {
     if (outcome === true || outcome === false) { //player wins
       msg(`${name} is the winner!`);
       outcome ? currentTurn.innerText = `${p1Name} wins!`: currentTurn.innerText = `${p2Name} wins!`;
-
-      drawLine();
-
-    } else { //draw
+      p1Score.innerText = ttt.score[0];
+      p2Score.innerText = ttt.score[1];
+      drawLine(); // TODO: this
+    } else { //game is a draw
       currentTurn.innerText = 'Draw!'
       msg(`Draw!`);
     }
@@ -75,7 +79,6 @@ function changeBoard(dir) {
 }
 
 function updateName() {
-  console.log(event);
   let val = event.target.value;
   let player = event.target.id.slice(1,2);
   player === '1' ? p1Name = val : p2Name = val;

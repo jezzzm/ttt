@@ -3,8 +3,10 @@ const statusCodes = {
   VALID: 1,
   DRAW: null,
   PLAYER1WIN: true,
-  PLAYER2WIN: false
+  PLAYER2WIN: false,
+  COMPLETE: -1
 }
+
 const ttt = {
 
   //GAME PROPS
@@ -13,6 +15,7 @@ const ttt = {
   turnCount: 0,
   moves: [], // shape: [[player, row, col],...]
   status: statusCodes.VALID, //game status - see statusCodes obj
+  score: [0,0], //player one, player two
 
   // GAMEPLAY LOGIC
   play: function(pos) { //update game board if valid, log to console if not
@@ -24,7 +27,6 @@ const ttt = {
       this.moves.push([this.player, ...coords]);
       this.board[coords[0]][coords[1]] = this.player; //update board
       let result = this.winCheck();
-      this.print();
       if (result === null) {
         this.turnCount++
         if (this.turnCount === this.board.length ** 2) { //this is the last move that may be played - draw
@@ -33,10 +35,11 @@ const ttt = {
         this.player = !this.player //toggle to next player
         return this.status = statusCodes.VALID;
       } else { //game is over, winner is true or false
+        result ? this.score[0]++ : this.score[1]++;
         return this.status = result;
       }
     } else {
-      console.log('not possible to play, must reset');
+      return this.status = statusCodes.COMPLETE;
     }
   },
 

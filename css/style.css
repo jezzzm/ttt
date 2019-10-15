@@ -6,6 +6,7 @@ body {
   width: 100vw;
   max-width: 100vw;
   overflow: hidden;
+  /* color: #000; */
 }
 
 main {
@@ -56,19 +57,19 @@ section {
   margin: 0 auto;
 }
 section > div {
-  background: grey;
+  background: #8b8b8b;
 }
 
 .free:hover {
-  background: pink;
+  background: #babfbb;
 }
 
 .p-two {
-  background: red;
+  background: #db5240;
 }
 
 .p-one {
-  background: blue;
+  background: #5e3df8;
 }
 
 .controls {
@@ -90,26 +91,36 @@ section > div {
 .board-size button:last-child {
   margin-right: 0;
 }
+
+.reset-pop {
+  display: none;
+  height: 100px;
+  width: 100px;
+  margin: 0 auto;
+}
+
 .log {
   flex: 2;
   display: flex;
   flex-flow: column;
   height: 100%;
   width: 100%;
-  background: #222;
-}
-.log > * {
-  margin: 0 auto;
-  width: 100%;
-  max-width: 600px;
-  padding: 1vw 2vw;
-  color: aliceblue;
-  font-family: monospace;
-  font-size:  0.9em;
-  line-height: 1.4;
+  background: #333232;
+  box-shadow: inset 0 8px 6px -6px rgba(0,0,0,0.8);
 }
 .log > article {
   overflow-y: scroll;
   flex: 2;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 600px;
+  padding: 0 2vw;
+  color: #edede1;
+  font-family: monospace;
+  font-size:  0.9em;
+  line-height: 1.4;
+}
 
+h1, h2, h3, div, p, button {
+  color: #222;
 }
