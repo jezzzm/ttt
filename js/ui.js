@@ -148,7 +148,7 @@ function doReset() {
 
 function cancelAIToggle() {
   ai.style = ''; //reset pointer event prevention
-  ai.checked = false;
+  ai.checked = false; //undo check
   aiPop.style.display = 'none';
 }
 
