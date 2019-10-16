@@ -168,6 +168,8 @@ function updateChildren(side=ttt.board.length) { //side is side length of square
 function doReset() {
   updateChildren();
   result.style = 'display: block';
+  aiPop.style = 'display: none';
+  resetPop.style = 'display: none';
   current.innerText = p1Name;
   msg('Game has been reset');
 }

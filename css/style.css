@@ -9,12 +9,10 @@ body {
 }
 
 main {
-  margin: 0 auto;
-  width: 100%;
   height: 100%;
-  box-sizing:border-box;
   display: flex;
   flex-flow: column;
+  background: #f5feff;
 }
 header {
   width: 96vw;
@@ -123,7 +121,6 @@ section > div {
   box-shadow: 2px 3px 3px rgba(0,0,0,0.2);
   transform: translate(-50%, -50%);
   border-radius: 5px;
-  transition: 1s display;
 }
 
 .log {
@@ -135,27 +132,24 @@ section > div {
   background: #333232;
   box-shadow: inset 0 8px 6px -6px rgba(0,0,0,0.8);
 }
-.log p {
+.log > * {
   color: #edede1;
-  letter-spacing: 1.5px;
   margin: 0 auto;
   width: 100%;
   max-width: 600px;
   padding: 0 2vw;
+}
+
+.log p {
   font-size: 1.05em;
   cursor: pointer;
   border-bottom: 1px solid #3d3d3d;
+  letter-spacing: 1.5px;
 }
-.log > article {
+.log article {
   overflow-y: scroll;
   flex: 2;
-  color: #edede1;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 600px;
-  padding: 0 2vw;
   font-family: monospace;
-  font-size:  0.9em;
   line-height: 1.4;
 }
 

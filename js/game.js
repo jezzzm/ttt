@@ -71,7 +71,7 @@ const ttt = {
         return [winner, i];
       }
     }
-    return [null, null]; //returns null if no match on current board
+    return [null, null]; //if no match on current board
   },
 
   checkRow: function(row) {
@@ -81,7 +81,6 @@ const ttt = {
 
   transpose: function(matrix) {
     //take index of columns from first row, use to map matching indices from each row to new row
-    // must be square matrix
     return matrix[0].map((_, i) => matrix.map(x => x[i]));
   },
 
@@ -101,7 +100,7 @@ const ttt = {
     return [multiplier, pos - side * multiplier];
   },
 
-  deepCopyNestedArray: function(arr) {
+  copyNestedArray: function(arr) {
     return arr.map(x => x.slice());
   },
 
@@ -114,7 +113,7 @@ const ttt = {
         count++
       }
       count = 0;
-      return row
+      return row;
     });
   },
 
@@ -129,7 +128,7 @@ const ttt = {
     this.moves = [];
     this.winAxis = null;
     this.board = this.createBoard(side);
-    this.boardID = this.deepCopyNestedArray(this.winMatrix(this.board));
+    this.boardID = this.copyNestedArray(this.winMatrix(this.board));
   },
 
   resetScore: function() {

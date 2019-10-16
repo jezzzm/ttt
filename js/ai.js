@@ -13,13 +13,13 @@ function aiMove() { //returns board id
     return ownTwoInRow;
   }
   // // (2) check for opp two in a row
-  let oppTwoInRow = checkTwoInRow(true, wins);
+  let oppTwoInRow = checkTwoInRow(true, wins, b);
   if (oppTwoInRow !== false) {
     console.log('blocking opponent two in a row');
     return oppTwoInRow;
   }
   // (3) check if own move can create 2x two in a rows
-  let ownTwoTwos = createTwoTwos(false, wins);
+  let ownTwoTwos = createTwoTwos(false, wins, b);
   if (ownTwoTwos !== false) {
     console.log('going for own fork');
     return ownTwoTwos;
@@ -36,36 +36,16 @@ function aiMove() { //returns board id
     return b[1][1];
   }
   // (6) opposite opponent corner, (7) any corner, (8) any side
-  return remainingSquares(false, wins)
+  return remainingSquares(false, b)
 }
 
 function checkTwoInRow(player, matrix) {
-  for (let i = 0; i < matrix.length; i++) {
-    let row = matrix[i];
-    let working = row.filter(x => x === !player); //no opp in row
-    if (working.length === 0) { //first step possibility
-      working = row.filter(x => typeof x === 'number');
-      if (working.length === 1) { //one more to get
-        return working[0];
-      }
-    }
-  }
-  return false;
+  return filterAsRequired(player, matrix, 'typeof', true);
 }
 
-function createTwoTwos(player, matrix, forceDefense=false) {
+function createTwoTwos(player, winMat, baseMat, forceDefense=false) {
   //build new array of valid possibilities
-  let valid = [];
-  for (let i = 0; i < matrix.length; i++) {
-    let row = matrix[i];
-    let working = row.filter(x => x === !player); //no opp in row
-    if (working.length === 0) {
-      working = row.filter(x => x === player)
-      if (working.length === 1) { //1x player, 2x free
-        valid.push(row);
-      }
-    }
-  }
+  let valid = filterAsRequired(player, winMat);
   //search possibilties for 2 with same number
   let nums = [];
   for (let i = 0; i < valid.length; i++) {
@@ -74,7 +54,7 @@ function createTwoTwos(player, matrix, forceDefense=false) {
       if (curr !== player) { //is a number
         if (nums.includes(curr)) { //matched with another row
           if (forceDefense) { //play any side
-            return playFirstSide(matrix);
+            return playFirstSide(baseMat);
           }
           return curr;
         } else {
@@ -87,9 +67,9 @@ function createTwoTwos(player, matrix, forceDefense=false) {
 }
 
 function remainingSquares(player, matrix) {
-
+  let max = matrix.length - 1;
   //(6) take first corner opposite enemy
-  let cornerPairs = [[matrix[0][0], matrix[2][2]], [matrix[0][2], matrix[2][0]]];
+  let cornerPairs = [[matrix[0][0], matrix[max][max]], [matrix[0][max], matrix[max][0]]];
   let oppInCorner = cornerPairs.filter(x => x.includes(!player) && !x.includes(player) && x[0] !== x[1]);
   if (oppInCorner.length > 0) {
     console.log('playing opposite corner to opponent corner');
@@ -97,7 +77,7 @@ function remainingSquares(player, matrix) {
   }
 
   // (7) take first free corner
-  let allCorners = [matrix[0][0], matrix[2][2], matrix[0][2], matrix[2][0]];
+  let allCorners = [...cornerPairs[0],...cornerPairs[1]];
   let freeCorners = allCorners.filter(x => typeof x === 'number');
   if (freeCorners.length > 0) {
     console.log('playing first available free corner');
@@ -106,12 +86,49 @@ function remainingSquares(player, matrix) {
 
   // (8) first free side
   return playFirstSide(matrix);
-
-  //TODO: need else for 4x size
 }
 
+//helpers
+
 function playFirstSide(matrix) {
-  let allSides = [matrix[0][1], matrix[1][0], matrix[1][2], matrix[2][1]];
+  console.log(matrix);
+  let max = matrix.length - 1;
+  let transposed = ttt.copyNestedArray(ttt.transpose(matrix)); //reuse transpose from game logic
+  console.log(transposed);
+  let allSides = [
+    ...matrix[0].slice(1,max), //top
+    ...matrix[max].slice(1,max), //bottom
+    ...transposed[0].slice(1, max), //left
+    ...transposed[max].slice(1,max) //right
+  ];
   console.log('playing first free side');
   return allSides.filter(x => typeof x === 'number')[0];
+}
+
+function filterAsRequired(player, matrix, searchFor=player, singleValue=false) {
+  let valid = [];
+  for (let i = 0; i < matrix.length; i++) {
+    let row = matrix[i];
+    let working = row.filter(x => x === !player); //no opp in row
+    if (working.length === 0) {
+      if (searchFor === player) {
+        working = row.filter(x => x === searchFor)
+      } else {
+        working = row.filter(x => typeof x === 'number')
+      }
+      if (working.length === 1) { //1x player, 2x free
+        if (!singleValue) {
+          valid.push(row);
+        } else {
+          return working[0]
+        }
+      }
+    }
+  }
+  if (!singleValue) {
+    return valid;
+  } else {
+    return false;
+  }
+
 }
