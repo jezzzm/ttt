@@ -1,6 +1,9 @@
 //elements and listeners
 let ai = ele('ai');
-ai.addEventListener('change', () => aiPop.style.display = 'block');
+ai.addEventListener('change', () => {
+  aiPop.style.display = 'block';
+  event.target.style = 'pointer-events: none';
+});
 
 ele('p1-name').addEventListener('change', nameChange);
 let p2 = ele('p2-name');
@@ -96,6 +99,7 @@ function toggleAI() {
   doReset();
   ttt.resetScore();
   updateScore(...ttt.score)
+  ai.style = ''; //reset pointer event prevention
   if (p2.disabled) {
     p2.placeholder = p2Old;
     p2.value = p2Old;
@@ -143,6 +147,7 @@ function doReset() {
 }
 
 function cancelAIToggle() {
+  ai.style = ''; //reset pointer event prevention
   ai.checked = false;
   aiPop.style.display = 'none';
 }
