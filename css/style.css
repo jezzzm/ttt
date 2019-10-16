@@ -12,7 +12,7 @@ main {
   height: 100%;
   display: flex;
   flex-flow: column;
-  background: #f5feff;
+  background: #fffdf5;
 }
 header {
   width: 96vw;
@@ -56,7 +56,7 @@ section > div {
 }
 
 .free:hover {
-  background: #babfbb;
+  background: #babebf;
   cursor: pointer;
 }
 

@@ -61,7 +61,7 @@ const ttt = {
   },
 
   winMatrix: function(matrix) {  //shape: R: sideLength(sL), C: 2x sL + 2
-    return [...matrix, ...this.transpose(matrix), ...this.diagonals(matrix)]
+    return [...matrix, ...this.transpose(matrix), ...this.diagonals(matrix)];
   },
 
   checkRows: function(matrix) {
@@ -117,10 +117,6 @@ const ttt = {
     });
   },
 
-  print: function() {
-    return console.log(this.board.join('\n'));
-  },
-
   reset: function(side=this.board.length) {
     this.turnCount = 0;
     this.player = true;
@@ -134,4 +130,4 @@ const ttt = {
   resetScore: function() {
     this.score = [0,0];
   }
-}
+};

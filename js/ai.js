@@ -13,7 +13,7 @@ function aiMove() { //returns board id
     return ownTwoInRow;
   }
   // // (2) check for opp two in a row
-  let oppTwoInRow = checkTwoInRow(true, wins, b);
+  let oppTwoInRow = checkTwoInRow(true, wins);
   if (oppTwoInRow !== false) {
     console.log('blocking opponent two in a row');
     return oppTwoInRow;
@@ -25,13 +25,13 @@ function aiMove() { //returns board id
     return ownTwoTwos;
   }
   // (4) check if opp move can create 2x two in a rows -> play such that this is blocked
-  let oppTwoTwos = createTwoTwos(true, wins, true);
+  let oppTwoTwos = createTwoTwos(true, wins, b, true);
   if (oppTwoTwos !== false) {
     console.log('identified opponents chance for two twos')
-    return oppTwoTwos
+    return oppTwoTwos;
   }
   // (5) play center (if imperfect ai, can play corner on first turn) TODO: toggle this
-  if (typeof b[1][1] === 'number') {
+  if (typeof b[1][1] === 'number') { //expand, prioritise very midde if it exists
     console.log('playing center');
     return b[1][1];
   }
@@ -49,11 +49,11 @@ function createTwoTwos(player, winMat, baseMat, forceDefense=false) {
   //search possibilties for 2 with same number
   let nums = [];
   for (let i = 0; i < valid.length; i++) {
-    for (let j = 0; j < valid[0].length; j++) { // TODO: optimise
+    for (let j = 0; j < valid[0].length; j++) { // TODO: optimise?
       let curr = valid[i][j];
       if (curr !== player) { //is a number
         if (nums.includes(curr)) { //matched with another row
-          if (forceDefense) { //play any side
+          if (forceDefense) { //play CORRECT side TODO, currently playing any
             return playFirstSide(baseMat);
           }
           return curr;
@@ -89,12 +89,15 @@ function remainingSquares(player, matrix) {
 }
 
 //helpers
+function getCentres(matrix) {
+  let len = matrix.length
+  let odd = len % 2 === 1;
 
+}
 function playFirstSide(matrix) {
   console.log(matrix);
   let max = matrix.length - 1;
   let transposed = ttt.copyNestedArray(ttt.transpose(matrix)); //reuse transpose from game logic
-  console.log(transposed);
   let allSides = [
     ...matrix[0].slice(1,max), //top
     ...matrix[max].slice(1,max), //bottom
