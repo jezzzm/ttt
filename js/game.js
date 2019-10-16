@@ -29,7 +29,6 @@ const ttt = {
       this.moves.push([this.player, ...coords]);
       this.board[coords[0]][coords[1]] = this.player; //update board
       let [result, axis] = this.winCheck(); //if win: [true or false, winning axis on board], else [null, null]
-      console.log(axis);
       this.winAxis = axis;
       if (result === null) {
         this.turnCount++
@@ -131,5 +130,9 @@ const ttt = {
     this.winAxis = null;
     this.board = this.createBoard(side);
     this.boardID = this.deepCopyNestedArray(this.winMatrix(this.board));
+  },
+
+  resetScore: function() {
+    this.score = [0,0];
   }
 }
