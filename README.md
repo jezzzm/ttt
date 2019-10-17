@@ -24,9 +24,9 @@ In addition to meeting the minimum requirements, I set myself some objectives, p
 * Adjustable  3x3 -> n x n board size
 	* Computer player still functional but certainly less artificial intelligence and more random as size increases
 * Developer-friendly codebase including:
-	* Separation of AI, UI and game logic scripts
+	* Separation of AI, UI and game logic scripts for future abstraction
 	* Tastefully commented code
-	* Regular and communicative commits
+	* Regular and meaningful commits
 	* As DRY as my fledgling capabilities permit
 
 ## Technologies Utilised

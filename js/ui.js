@@ -22,6 +22,9 @@ let aiPop = ele('ai-pop');
 ele('continue').addEventListener('click', toggleAI);
 ele('cancel').addEventListener('click', cancelAIToggle);
 
+let helpPop = ele('help-pop');
+ele('instructions').addEventListener('click', () => helpPop.style.display = 'block');
+ele('dismiss-help').addEventListener('click', () => helpPop.style.display = 'none');
 ele('reset').addEventListener('click', doReset);
 let notice = ele('notice');
 ele('expand').addEventListener('click', () => resizeBoard(1));
@@ -92,7 +95,7 @@ function toggleAI() {
   ai.style = ''; //reset pointer event prevention
   if (p2.disabled) { // toggle interactivity with P2 input field
     p2.placeholder = p2Old;
-    p2.value = p2Old;
+    p2Old === 'P2' ? p2.value = '' : p2.value = p2Old; //don't input name if it was never changed
   } else {
     p2.placeholder = "Computer";
     p2.value = "Computer";

@@ -14,8 +14,12 @@
       <header>
         <h1>Tic Tac Toe</h1>
         <div>
-          <label for="ai">AI Opponent</label>
-          <input type="checkbox" id="ai" name="ai"></input>
+
+          <div>
+            <label for="ai">AI Opponent</label>
+            <input type="checkbox" id="ai" name="ai"></input>
+          </div>
+          <button id="instructions">Instructions</button>
         </div>
       </header>
       <aside id="settings" class="controls players">
@@ -53,6 +57,19 @@
     <p>This will reset the current game and scores.</p>
     <button id="continue">Continue</button>
     <button id="cancel">Cancel</button>
+  </div>
+  <div id="help-pop" class="pop">
+    <h3>Instructions</h3>
+    <p>Tic Tac Toe is the game that takes seconds to learn, and minutes to master!</p>
+    <p>The rules are simple:</p>
+    <ul>
+      <li>Players take turns placing tokens on the board.</li>
+      <li>If a full row, column, or diagonal of the playing board if filled with one player's tokens, that player wins.</li>
+      <li>In this version, the playing board may be increased beyond 3x3.</li>
+      <li>For help with strategy, an optional human vs. computer mode is available.</li>
+      <li>Alternatively, <a href="https://en.wikipedia.org/wiki/Tic-tac-toe" alt="Link to Tic Tac Toe article on Wikipedia" target="_blank">visit Wikipedia</a> for more in-depth explanation of the game</li>
+    </ul>
+    <button id="dismiss-help">Dismiss</button>
   </div>
   <script src="js/game.js" charset="utf-8"></script>
   <script src="js/ai.js" charset="utf-8"></script>
