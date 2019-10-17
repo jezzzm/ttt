@@ -14,7 +14,8 @@ The primary aim for this project is to deliver an online-hosted, playable Tic Ta
 ## Design Objectives
 In addition to meeting the minimum requirements, I set myself some objectives, primarily to optimise user experience of the site.
 
-* Fully responsive without media queries - utilise modern CSS display methods (grid + flexbox)
+* Fully responsive
+* Utilise modern CSS display methods (grid + flexbox)
 * No third party JS dependencies
 	* To ensure lightweight site with minimal ‘fluff'
 * Highly readable text

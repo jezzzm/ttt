@@ -43,23 +43,21 @@ function aiMove() { //returns board id
 function createTwoTwos(player, winMat, baseMat, forceDefense=false) {
   //build new array of valid possibilities
   let valid = filterAsRequired(player, winMat);
-  console.log('valid options: ', valid);
   //search possibilties for 2 with same number
   let unique = [];
   let matchingCells =[];
   for (let i = 0; i < valid.length; i++) {
-    for (let j = 0; j < valid[0].length; j++) { // TODO: optimise?
+    for (let j = 0; j < valid[0].length; j++) {
       let curr = valid[i][j];
       if (curr !== player) { //is a number
         unique.includes(curr) ? matchingCells.push(curr) : unique.push(curr);
       }
     }
   }
-  console.log('matching cells: ', matchingCells)
   if (matchingCells.length === 1) { //one option to block
     return matchingCells[0];
   } else if (matchingCells.length > 1) { //force defense with side
-    return playFirstSide(baseMat);
+    return playSide(baseMat);
   }
   return false;
 }
@@ -82,8 +80,8 @@ function remainingSquares(player, matrix) {
     return freeCorners[0];
   }
 
-  // (8) first free side
-  return playFirstSide(matrix);
+  // (8) free side
+  return playSide(matrix);
 }
 
 //helpers
@@ -98,8 +96,9 @@ function getCentral(matrix) {
   //choose randomly from options -> always center for 3x3
   return len > 0 ? central[Math.floor(Math.random() * len)] : false;
 }
-function playFirstSide(matrix) {
-  console.log('playing first free side');
+
+function playSide(matrix) {
+  console.log('playing free side');
   return getSides(matrix).filter(x => typeof x === 'number')[0];
 }
 
@@ -136,5 +135,5 @@ function filterAsRequired(player, matrix, searchFor=player, singleValue=false) {
       }
     }
   }
-  return !singleValue ? valid : false;
+  return singleValue ? false : valid;
 }

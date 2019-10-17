@@ -10,22 +10,24 @@
 </head>
 <body>
   <main>
-    <header>
-      <h1>Tic Tac Toe</h1>
-      <div>
-        <label for="ai">AI Opponent</label>
-        <input type="checkbox" id="ai" name="ai"></input>
-      </div>
-    </header>
-    <aside id="settings" class="controls players">
-        <input type="text" id="p1-name" class="name" placeholder="P1">
+    <div class="first-panel">
+      <header>
+        <h1>Tic Tac Toe</h1>
         <div>
-          <p class="score">
-            <span id="p1-score">0</span> : <span id="p2-score">0</span>
-          </p>
+          <label for="ai">AI Opponent</label>
+          <input type="checkbox" id="ai" name="ai"></input>
         </div>
-        <input type="text" id="p2-name" class="name" placeholder="P2">
-    </aside>
+      </header>
+      <aside id="settings" class="controls players">
+          <input type="text" id="p1-name" class="name" placeholder="P1">
+          <div>
+            <p class="score">
+              <span id="p1-score">0</span> : <span id="p2-score">0</span>
+            </p>
+          </div>
+          <input type="text" id="p2-name" class="name" placeholder="P2">
+      </aside>
+    </div>
     <section id="board"></section>
     <aside id="controls" class="controls">
       <button id="reset">Reset</button>
