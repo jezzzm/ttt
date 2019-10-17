@@ -25,6 +25,7 @@ ele('cancel').addEventListener('click', cancelAIToggle);
 let helpPop = ele('help-pop');
 ele('instructions').addEventListener('click', () => helpPop.style.display = 'block');
 ele('dismiss-help').addEventListener('click', () => helpPop.style.display = 'none');
+
 ele('reset').addEventListener('click', doReset);
 let notice = ele('notice');
 ele('expand').addEventListener('click', () => resizeBoard(1));

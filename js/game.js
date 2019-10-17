@@ -91,7 +91,7 @@ const ttt = {
   },
 
   //HELPER METHODS /////////////////////////////////////////////////////////////
-  getSquare: function(pos) { //input pos 0-8, return coords as [row, col]
+  getSquare: function(pos) { //input pos 0 -> n^2 - 1, return coords as [row, col]
     let side = this.board[0].length;
     let multiplier = Math.floor(pos/side);
     return [multiplier, pos - side * multiplier];
