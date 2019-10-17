@@ -5,21 +5,17 @@ ai.addEventListener('change', () => {
   event.target.style = 'pointer-events: none';
 });
 
-ele('p1-name').addEventListener('change', nameChange);
+ele('p1-name').addEventListener('change', () => nameChange(true));
 let p2 = ele('p2-name');
-p2.addEventListener('change', nameChange);
-let p1Score = ele('p1-score');
-let p2Score = ele('p2-score');
+p2.addEventListener('change', () => nameChange(false));
+let [p1Score, p2Score] = [ele('p1-score'), ele('p2-score')];
 let result = ele('result');
 let currentTurn = ele('current');
 
 let board = ele('board');
-let resetPop = ele('reset-pop'); //TODO: these
+let resetPop = ele('reset-pop');
 ele('dismiss').addEventListener('click', () => resetPop.style.display = 'none');
-ele('newgame').addEventListener('click', () => {
-  doReset();
-  resetPop.style = "display: none";
-})
+ele('newgame').addEventListener('click', doReset);
 
 let aiPop = ele('ai-pop');
 ele('continue').addEventListener('click', toggleAI);
@@ -27,17 +23,16 @@ ele('cancel').addEventListener('click', cancelAIToggle);
 
 ele('reset').addEventListener('click', doReset);
 let notice = ele('notice');
-ele('expand').addEventListener('click', () => changeBoard(1));
-ele('reduce').addEventListener('click', () => changeBoard(-1));
+ele('expand').addEventListener('click', () => resizeBoard(1));
+ele('reduce').addEventListener('click', () => resizeBoard(-1));
 
 //initial board setup
 updateBoard(3); //create board w side length 3
 
-let p1Name = 'P1';
-let p2Name = 'P2'
+let [p1Name, p2Name] = ['P1', 'P2'];
 let p2Old = p2Name;
 
-// act upon playing square
+// gameplay functions
 function squareClick(id) {
   let outcome = ttt.play(id);
   let [player, row, col] = ttt.moves.slice(-1)[0];
@@ -47,7 +42,6 @@ function squareClick(id) {
   if (outcome === 1) {
     doValidMove(player, el, name, row, col);
   } else if (outcome === -1) { //game already over, show popup to prompt new game
-      ele('winner').innerText = name;
       resetPop.style.display = 'block';
   } else if (outcome !== 0){
     doLastMove(player, el, name, outcome);
@@ -75,8 +69,8 @@ function doLastMove(player, el, name, outcome) {
   }
 }
 
-// secondary functions
-function changeBoard(dir) {
+// secondary ui functions
+function resizeBoard(dir) {
   let newSize = ttt.board.length + dir;
   if (newSize >= 3) {
     updateBoard(newSize);
@@ -84,10 +78,12 @@ function changeBoard(dir) {
   }
 }
 
-function nameChange() {
+function nameChange(name) {
   let val = event.target.value;
-  let player = event.target.id.slice(1,2); //unique part of id
-  if (player === '1') {
+  if ((name && ttt.player) || (!name && !ttt.player)) { //current player was the one who changed name
+    currentTurn.innerText = val; //reflect in ui
+  }
+  if (name) {
     p1Name = val;
   } else {
     p2Name = val;
@@ -100,7 +96,7 @@ function toggleAI() {
   ttt.resetScore();
   updateScore(...ttt.score)
   ai.style = ''; //reset pointer event prevention
-  if (p2.disabled) {
+  if (p2.disabled) { // toggle interactivity with P2 input field
     p2.placeholder = p2Old;
     p2.value = p2Old;
     p2.disabled = false;

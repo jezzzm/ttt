@@ -79,10 +79,7 @@ const ttt = {
     return checked.length === 0 ? row[0] : null; //we have match if nothing in array
   },
 
-  transpose: function(matrix) {
-    //take index of columns from first row, use to map matching indices from each row to new row
-    return matrix[0].map((_, i) => matrix.map(x => x[i]));
-  },
+  transpose: (matrix) => matrix[0].map((_, i) => matrix.map(x => x[i])),
 
   diagonals: function(matrix) {
     let diagonals = [[],[]]; // only ever 2 winning diagonals
@@ -100,9 +97,7 @@ const ttt = {
     return [multiplier, pos - side * multiplier];
   },
 
-  copyNestedArray: function(arr) {
-    return arr.map(x => x.slice());
-  },
+  copyNestedArray: (arr) => arr.map(x => x.slice()), //prevent reference to OG arr
 
   createBoard: function(side) {
     let count = 0;

@@ -7,13 +7,13 @@ function aiMove() { //returns board id
   //for params: ai = false, human = true
 
   // (1) check for own two in a row
-  let ownTwoInRow = checkTwoInRow(false, wins);
+  let ownTwoInRow = filterAsRequired(false, wins, 'typeof', true);
   if (ownTwoInRow !== false) {
     console.log('going for win!');
     return ownTwoInRow;
   }
   // // (2) check for opp two in a row
-  let oppTwoInRow = checkTwoInRow(true, wins);
+  let oppTwoInRow = filterAsRequired(true, wins, 'typeof', true);
   if (oppTwoInRow !== false) {
     console.log('blocking opponent two in a row');
     return oppTwoInRow;
@@ -37,10 +37,6 @@ function aiMove() { //returns board id
   }
   // (6) opposite opponent corner, (7) any corner, (8) any side
   return remainingSquares(false, b)
-}
-
-function checkTwoInRow(player, matrix) {
-  return filterAsRequired(player, matrix, 'typeof', true);
 }
 
 function createTwoTwos(player, winMat, baseMat, forceDefense=false) {
@@ -95,18 +91,23 @@ function getCentres(matrix) {
 
 }
 function playFirstSide(matrix) {
-  console.log(matrix);
-  let max = matrix.length - 1;
-  let transposed = ttt.copyNestedArray(ttt.transpose(matrix)); //reuse transpose from game logic
-  let allSides = [
-    ...matrix[0].slice(1,max), //top
-    ...matrix[max].slice(1,max), //bottom
-    ...transposed[0].slice(1, max), //left
-    ...transposed[max].slice(1,max) //right
-  ];
   console.log('playing first free side');
-  return allSides.filter(x => typeof x === 'number')[0];
+  return getSides(matrix).filter(x => typeof x === 'number')[0];
 }
+
+function getSides(matrix) {
+  let transposed = ttt.copyNestedArray(ttt.transpose(matrix)); //reuse transpose from game logic
+  let max = matrix.length - 1;
+  let sides = [
+    ...rowInsides(matrix[0]), //top
+    ...rowInsides(matrix[max]), //bottom
+    ...rowInsides(transposed[0]), //left
+    ...rowInsides(transposed[max]) //right
+  ];
+  return sides
+}
+
+rowInsides = (row) => row.slice(1, row.length - 1);
 
 function filterAsRequired(player, matrix, searchFor=player, singleValue=false) {
   let valid = [];
