@@ -31,9 +31,10 @@ function aiMove() { //returns board id
     return oppTwoTwos;
   }
   // (5) play center (if imperfect ai, can play corner on first turn) TODO: toggle this
-  if (typeof b[1][1] === 'number') { //expand, prioritise very midde if it exists
+  let central = getCentral(b);
+  if (central !== false) { //expand, prioritise very midde if it exists
     console.log('playing center');
-    return b[1][1];
+    return central;
   }
   // (6) opposite opponent corner, (7) any corner, (8) any side
   return remainingSquares(false, b)
@@ -42,22 +43,23 @@ function aiMove() { //returns board id
 function createTwoTwos(player, winMat, baseMat, forceDefense=false) {
   //build new array of valid possibilities
   let valid = filterAsRequired(player, winMat);
+  console.log('valid options: ', valid);
   //search possibilties for 2 with same number
-  let nums = [];
+  let unique = [];
+  let matchingCells =[];
   for (let i = 0; i < valid.length; i++) {
     for (let j = 0; j < valid[0].length; j++) { // TODO: optimise?
       let curr = valid[i][j];
       if (curr !== player) { //is a number
-        if (nums.includes(curr)) { //matched with another row
-          if (forceDefense) { //play CORRECT side TODO, currently playing any
-            return playFirstSide(baseMat);
-          }
-          return curr;
-        } else {
-          nums.push(curr);
-        }
+        unique.includes(curr) ? matchingCells.push(curr) : unique.push(curr);
       }
     }
+  }
+  console.log('matching cells: ', matchingCells)
+  if (matchingCells.length === 1) { //one option to block
+    return matchingCells[0];
+  } else if (matchingCells.length > 1) { //force defense with side
+    return playFirstSide(baseMat);
   }
   return false;
 }
@@ -85,10 +87,16 @@ function remainingSquares(player, matrix) {
 }
 
 //helpers
-function getCentres(matrix) {
-  let len = matrix.length
-  let odd = len % 2 === 1;
-
+function getCentral(matrix) {
+  //get all central elements
+  let central = []
+  for (let i = 1; i < matrix.length - 1; i++) {
+    //filter out anything already taken
+    central.push(...rowInsides(matrix[i]).filter(x => typeof x === 'number'));
+  }
+  let len = central.length;
+  //choose randomly from options -> always center for 3x3
+  return len > 0 ? central[Math.floor(Math.random() * len)] : false;
 }
 function playFirstSide(matrix) {
   console.log('playing first free side');
@@ -98,13 +106,12 @@ function playFirstSide(matrix) {
 function getSides(matrix) {
   let transposed = ttt.copyNestedArray(ttt.transpose(matrix)); //reuse transpose from game logic
   let max = matrix.length - 1;
-  let sides = [
+  return ([
     ...rowInsides(matrix[0]), //top
     ...rowInsides(matrix[max]), //bottom
     ...rowInsides(transposed[0]), //left
     ...rowInsides(transposed[max]) //right
-  ];
-  return sides
+  ]);
 }
 
 rowInsides = (row) => row.slice(1, row.length - 1);
@@ -129,10 +136,5 @@ function filterAsRequired(player, matrix, searchFor=player, singleValue=false) {
       }
     }
   }
-  if (!singleValue) {
-    return valid;
-  } else {
-    return false;
-  }
-
+  return !singleValue ? valid : false;
 }

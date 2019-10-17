@@ -1,4 +1,6 @@
 //elements and listeners
+ele = (id) => document.getElementById(id); //jezQuery
+
 let ai = ele('ai');
 ai.addEventListener('change', () => {
   aiPop.style.display = 'block';
@@ -9,8 +11,7 @@ ele('p1-name').addEventListener('change', () => nameChange(true));
 let p2 = ele('p2-name');
 p2.addEventListener('change', () => nameChange(false));
 let [p1Score, p2Score] = [ele('p1-score'), ele('p2-score')];
-let result = ele('result');
-let currentTurn = ele('current');
+let [result, currentTurn] = [ele('result'), ele('current')];
 
 let board = ele('board');
 let resetPop = ele('reset-pop');
@@ -25,9 +26,6 @@ ele('reset').addEventListener('click', doReset);
 let notice = ele('notice');
 ele('expand').addEventListener('click', () => resizeBoard(1));
 ele('reduce').addEventListener('click', () => resizeBoard(-1));
-
-//initial board setup
-updateBoard(3); //create board w side length 3
 
 let [p1Name, p2Name] = ['P1', 'P2'];
 let p2Old = p2Name;
@@ -83,40 +81,32 @@ function nameChange(name) {
   if ((name && ttt.player) || (!name && !ttt.player)) { //current player was the one who changed name
     currentTurn.innerText = val; //reflect in ui
   }
-  if (name) {
-    p1Name = val;
-  } else {
-    p2Name = val;
-    p2Old = p2Name;
-  }
+  name ? p1Name = val : p2Name = val;
+  p2Old = p2Name;
 }
 
 function toggleAI() {
   doReset();
   ttt.resetScore();
-  updateScore(...ttt.score)
+  updateScore(...ttt.score);
   ai.style = ''; //reset pointer event prevention
   if (p2.disabled) { // toggle interactivity with P2 input field
     p2.placeholder = p2Old;
     p2.value = p2Old;
-    p2.disabled = false;
   } else {
     p2.placeholder = "Computer";
     p2.value = "Computer";
-    p2.disabled = true;
   }
+  p2.disabled = !p2.disabled;
   aiPop.style.display = 'none';
 }
 
 //helpers
-function getDiv(id) {
-  return ele(`sq${id}`);
-}
+getDiv = (id) => ele(`sq${id}`);
 
-function updateScore(score1, score2) {
-  p1Score.innerText = score1;
-  p2Score.innerText = score2;
-}
+updateScore = (s1, s2) => [p1Score.innerText, p2Score.innerText] = [s1, s2];
+
+animateWin = () => ttt.boardID[ttt.winAxis].forEach(id => getDiv(id).classList.add('highlight'));
 
 function updateBoard(side=ttt.board.length) { //side is side length of square
   ttt.reset(side);
@@ -148,11 +138,5 @@ function cancelAIToggle() {
   aiPop.style.display = 'none';
 }
 
-function animateWin() {
-  let ids = ttt.boardID[ttt.winAxis];
-  ids.forEach(id => getDiv(id).classList.add('highlight'));
-}
-
-function ele(id) { //jezQuery
-  return document.getElementById(id);
-}
+//initial board setup
+updateBoard(3); //create board w side length 3
