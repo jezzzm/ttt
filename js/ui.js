@@ -1,4 +1,4 @@
-//elements and listeners
+//elements and listeners ///////////////////////////////////////////////////////
 ele = (id) => document.getElementById(id); //jezQuery
 
 let ai = ele('ai');
@@ -34,7 +34,7 @@ ele('reduce').addEventListener('click', () => resizeBoard(-1));
 let [p1Name, p2Name] = ['P1', 'P2'];
 let p2Old = p2Name;
 
-// gameplay functions
+// gameplay functions //////////////////////////////////////////////////////////
 function squareClick(id) {
   let outcome = ttt.play(id);
   let [player, row, col] = ttt.moves.slice(-1)[0];
@@ -71,7 +71,7 @@ function doLastMove(player, el, name, outcome) {
   }
 }
 
-// secondary ui functions
+// secondary ui functions //////////////////////////////////////////////////////
 function resizeBoard(dir) {
   let newSize = ttt.board.length + dir;
   if (newSize >= 3) {
@@ -105,7 +105,7 @@ function toggleAI() {
   aiPop.style.display = 'none';
 }
 
-//helpers
+//helpers //////////////////////////////////////////////////////////////////////
 getDiv = (id) => ele(`sq${id}`);
 
 updateScore = (s1, s2) => [p1Score.innerText, p2Score.innerText] = [s1, s2];
@@ -142,5 +142,5 @@ function cancelAIToggle() {
   aiPop.style.display = 'none';
 }
 
-//initial board setup
+//initial board setup //////////////////////////////////////////////////////////
 updateBoard(3); //create board w side length 3

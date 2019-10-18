@@ -27,7 +27,7 @@ In addition to meeting the minimum requirements, I set myself some objectives, p
 	* Separation of AI, UI and game logic scripts, simplifying future abstraction
 	* Tastefully commented code (attempted)
 	* Regular and meaningful commits
-	* As DRY as my fledgling capabilities permit
+	* Adheres to DRY principles
 
 ## Technologies Utilised
 * Vanilla JavaScript

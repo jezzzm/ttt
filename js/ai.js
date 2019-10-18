@@ -1,9 +1,10 @@
 function aiMove() { //returns board id
-  // current board information
+
+  // current board information//////////////////////////////////////////////////
   let b = ttt.board; // n x n board with cell values
   let wins = ttt.winMatrix(b); //n x 2n + 2 matrix with updated cell values
 
-  // priority logic
+  // priority logic ////////////////////////////////////////////////////////////
   //for params: ai = false, human = true
 
   // (1) check for own two in a row
@@ -40,6 +41,7 @@ function aiMove() { //returns board id
   return remainingSquares(false, b)
 }
 
+//helpers //////////////////////////////////////////////////////////////////////
 function createTwoTwos(player, winMat, baseMat, forceDefense=false) {
   //build new array of valid possibilities
   let valid = filterAsRequired(player, winMat);
@@ -84,7 +86,6 @@ function remainingSquares(player, matrix) {
   return playSide(matrix);
 }
 
-//helpers
 function getCentral(matrix) {
   //get all central elements
   let central = []
