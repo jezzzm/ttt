@@ -59,6 +59,8 @@ Check out the [online demo](https://jezzzm.github.io/ttt/), or feel free to fork
 * Implement 'training mode'
 	* Abstraction of opponent AI to provide suggestions for human player regarding their next move
 	* Use colour opacity of valid squares to reflect likelihood of success? I.e. darker for best outcome, lighter for worst outcome
+* First player selection
+* Drier popups -> inject with JS rather than show/hide hardcoded html content
 
 ## Source
 This project’s requirements are set as part of the [General Assembly Software Engineering Immersive](https://generalassemb.ly/education/software-engineering-immersive/sydney) course.
