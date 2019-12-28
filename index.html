@@ -13,23 +13,28 @@
     <div class="first-panel">
       <header>
         <h1>Tic Tac Toe</h1>
-        <div>
-
+        <div class="help-ai-container">
+          <a href="#" id="instructions">Help</a>
           <div>
             <label for="ai">AI Opponent</label>
             <input type="checkbox" id="ai" name="ai"></input>
           </div>
-          <button id="instructions">Instructions</button>
         </div>
       </header>
       <aside id="settings" class="controls players">
+        <label class="name" >
+          <span class="p1">Player 1 Name</span>
           <input type="text" id="p1-name" class="name" placeholder="P1">
+        </label>
           <div>
             <p class="score">
               <span id="p1-score">0</span> : <span id="p2-score">0</span>
             </p>
           </div>
-          <input type="text" id="p2-name" class="name" placeholder="P2">
+          <label class="name" >
+            <span class="p2">Player 2 Name</span> 
+            <input type="text" id="p2-name" class="name" placeholder="P2">
+          </label>
       </aside>
     </div>
     <section id="board"></section>
@@ -67,7 +72,7 @@
       <li>If a full row, column, or diagonal of the playing board if filled with one player's tokens, that player wins.</li>
       <li>In this version, the playing board may be increased beyond 3x3.</li>
       <li>For help with strategy, an optional human vs. computer mode is available.</li>
-      <li>Alternatively, <a href="https://en.wikipedia.org/wiki/Tic-tac-toe" alt="Link to Tic Tac Toe article on Wikipedia" target="_blank">visit Wikipedia</a> for more in-depth explanation of the game</li>
+      <li>Alternatively, <a href="https://en.wikipedia.org/wiki/Tic-tac-toe" alt="Link to Tic Tac Toe article on Wikipedia" target="_blank" rel="noopener">visit Wikipedia</a> for more in-depth explanation of the game</li>
     </ul>
     <button id="dismiss-help">Dismiss</button>
   </div>
